@@ -7,14 +7,13 @@ import { useFonts } from 'expo-font'
 export default function App() {
   useFonts({
     'SuperMario': require('./assets/fonts/SuperMario256.ttf'),
+    'MenuFont': require('./assets/fonts/AOTFShinGoProMedium.otf')
   });
 
   const [theMap, setTheMap] = useState(null);
 
-  const handleMap = () => {
-    
+  const handleMap = () => {    
     setTheMap(getMapById());
-    // console.log(getMapById());
   }
 
   mapSelected = (list)  => {
@@ -23,33 +22,35 @@ export default function App() {
     }
     return (
       <View style={styles.mapContainer}>
-        <Text style={styles.title}>{list.name}</Text>
-        <Image source={list.boardIcon}></Image>
-        <Text>{list.description}</Text>
-        {/* <ImageBackground source={list.boardView}></ImageBackground> */}
-    </View>
+          <Text style={styles.title}>{list.name}</Text>
+          <Image source={list.boardIcon}></Image>
+     </View>
   );
 };
 
   return (
+    <ImageBackground
+      source={theMap ? theMap.boardView : null}
+      style={styles.container}
+      blurRadius={3}
+    >
+
     <View style={styles.container}>
       <StatusBar style="auto" />
-      {/* <View>
-        
-        <Text style={styles.title}> Map Title</Text>
-      </View> */}
+      
       {mapSelected(theMap)}
-      <TouchableOpacity onPress={handleMap}>
-        <Text style={styles.text}> Generate </Text>
+      
+      <TouchableOpacity style={styles.button} onPress={handleMap}>
+        <Text style={styles.buttonText}> Generate  </Text>
       </TouchableOpacity>
     </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     
@@ -57,14 +58,12 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 10,
     fontSize: 42,
-    // font: './assets/fonts/SuperMario256'
   },
   mainImage: {
     width: 250,
     height: 200
   },
   title: {
-    fontSize: 48,
     marginBottom: 100
   },
   mapContainer: {
@@ -74,6 +73,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontFamily: 'SuperMario'
+    fontSize: 35,
+    margin: 5,
+    textAlign: 'center',
+    fontFamily: 'SuperMario',
+    color: '#fff',
+    
+    textShadowColor: '#000',
+    textShadowRadius: 20,
+  },
+  button: {
+    borderRadius: 60,
+    backgroundColor: '#fff',
+  },
+  buttonText: {
+    fontSize: 32,
+    fontFamily: 'MenuFont',
+    paddingStart: 10,
+    paddingBottom: 5
   }
 });
