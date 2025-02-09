@@ -20,7 +20,7 @@ npm install
 npm start
 ```
 
-<p>Running on a Mobile Device</p>
+<h3>Running on a Mobile Device</h3>
 
 <p>To run the project on your phone, you have two options:</p>
 
