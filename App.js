@@ -81,7 +81,7 @@ export default function App() {
       {mapSelected(theMap)}
       
       <TouchableOpacity style={styles.button} onPress={handleMap}>
-        <Text style={styles.buttonText}> Generate  </Text>
+        <Text style={styles.buttonText}> Let's go !  </Text>
       </TouchableOpacity>
     </View>
     </ImageBackground>
