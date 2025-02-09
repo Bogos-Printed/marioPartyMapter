@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getMapById, getAllMaps } from './maps/maps';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import * as Haptics from 'expo-haptics';
-import defaultBackground from './assets/background-default.jpg'
+import defaultBackground from './assets/background-default.jpg';
+import { Audio } from 'expo-av';
 
 export default function App() {
   useFonts({
@@ -13,10 +14,41 @@ export default function App() {
   });
 
   const [theMap, setTheMap] = useState(null);
+  const [sound, setSound] = useState();
+  const [music, setMusic] = useState();
   // const allMaps = getAllMaps();
 
+  const playSound = async () => {
+    const {sound} = await Audio.Sound.createAsync( 
+      require('./assets/audio/button-soundeffect.mp3')
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  useEffect(() => {
+    let bgMusic;
+
+    const loadMusic = async () => {
+      const {sound} = await Audio.Sound.createAsync(
+        require('./assets/audio/main-theme.mp3'),
+        {isLooping: true}
+      );
+      bgMusic = sound;
+      setMusic(bgMusic);
+      await bgMusic.playAsync();
+    };
+    loadMusic();
+
+    return () => {
+      if (bgMusic) {
+        bgMusic.unloadAsync();
+      }
+    }
+  }, []);
 
   const handleMap = () => {   
+    playSound();
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft); 
     setTheMap(getMapById());
   }
