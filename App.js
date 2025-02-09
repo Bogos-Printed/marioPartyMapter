@@ -1,8 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import  getMapById    from './maps/maps';
+import { getMapById, getAllMaps } from './maps/maps';
 import { useState } from 'react';
-import { useFonts } from 'expo-font'
+import { useFonts } from 'expo-font';
+import * as Haptics from 'expo-haptics';
+import defaultBackground from './assets/background-default.jpg'
 
 export default function App() {
   useFonts({
@@ -11,14 +13,20 @@ export default function App() {
   });
 
   const [theMap, setTheMap] = useState(null);
+  // const allMaps = getAllMaps();
 
-  const handleMap = () => {    
+
+  const handleMap = () => {   
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft); 
     setTheMap(getMapById());
   }
+  // mapRoll = () => {
+  //   // allMaps.push()
+  // }
 
   mapSelected = (list)  => {
     if (!list) {
-      return <Image style={styles.mainImage} source={require(`./assets/Super_Mario_Party_Jamboree_Logo.png`)}></Image>
+      return <Image style={[styles.mainImage]} source={require(`./assets/Super_Mario_Party_Jamboree_Logo.png`)}></Image>
     }
     return (
       <View style={styles.mapContainer}>
@@ -30,14 +38,14 @@ export default function App() {
 
   return (
     <ImageBackground
-      source={theMap ? theMap.boardView : null}
+      source={theMap ? theMap.boardView : defaultBackground}
       style={styles.container}
       blurRadius={3}
     >
 
     <View style={styles.container}>
       <StatusBar style="auto" />
-      
+   
       {mapSelected(theMap)}
       
       <TouchableOpacity style={styles.button} onPress={handleMap}>
@@ -61,7 +69,7 @@ const styles = StyleSheet.create({
   },
   mainImage: {
     width: 250,
-    height: 200
+    height: 200,
   },
   title: {
     marginBottom: 100
@@ -83,11 +91,13 @@ const styles = StyleSheet.create({
     textShadowRadius: 20,
   },
   button: {
+    // width: 195,
     borderRadius: 60,
     backgroundColor: '#fff',
   },
   buttonText: {
     fontSize: 32,
+    width: 190,
     fontFamily: 'MenuFont',
     paddingStart: 10,
     paddingBottom: 5
